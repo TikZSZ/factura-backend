@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
     credentials:true,
-    origin:['http://localhost:3000','https://factura-frontend.vercel.app/']
+    origin:process.env.NODE_ENV === "production"?'https://factura-frontend.vercel.app':'http://localhost:3000',
   })
   app.set('trust proxy',true)
   app.useGlobalPipes(new ValidationPipe());

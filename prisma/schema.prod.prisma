@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://intivqfrjmbqpa:8ee07dc22bc5c51e65ac87bd2ac70ddb68f1c60fadcce7443fadee74c5cfe5e7@ec2-34-252-251-16.eu-west-1.compute.amazonaws.com:5432/d9hf8cdgi29eao"
+}
+
+model User {
+  userAccountId String       @id
+  name          String
+  public_key    String
+  country       String
+  stores        Store[]
+  receiptRefs   ReceiptRef[]
+  signature     String
+}
+
+model Store {
+  store_id      Int          @id @default(autoincrement())
+  store_name    String
+  country       String
+  phone_number  Int
+  address       String
+  website       String
+  status        String       @default("active") 
+  timeRegistred String
+  seller        User?        @relation(fields: [seller_id], references: [userAccountId])
+  seller_id     String
+  receiptRefs   ReceiptRef[]
+  signature     String
+  sequence_no   Int
+  timestamp     String
+}
+
+model ReceiptRef {
+  receipt_id  Int       @id @default(autoincrement())
+  time        String
+  store_id    Int
+  store       Store?    @relation(fields: [store_id], references: [store_id])
+  buyer_id    String
+  buyer       User?     @relation(fields: [buyer_id], references: [userAccountId])
+  products    Product[]
+  signature   String
+  sequence_no Int
+  timestamp   String
+}
+
+model Product {
+  id             Int         @id @default(autoincrement())
+  seq            Int          
+  product_name   String
+  price          Decimal
+  tax            Decimal     @default(0)
+  discount       Decimal     @default(0)
+  qty            Int         @default(1)
+  total          Decimal
+  receipt_id     Int
+  receipt_refs   ReceiptRef? @relation(fields: [receipt_id], references: [receipt_id])
+}

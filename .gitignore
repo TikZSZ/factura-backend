@@ -4,3 +4,4 @@ node_modules
 prisma/schema.prisma
 prisma/dev.db
 prisma/migrations
+dist 

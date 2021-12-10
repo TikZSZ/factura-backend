@@ -8,7 +8,7 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
         credentials: true,
-        origin: 'http://localhost:3000'
+        origin: ['http://localhost:3000', 'https://factura-frontend.vercel.app/']
     });
     app.set('trust proxy', true);
     app.useGlobalPipes(new common_1.ValidationPipe());

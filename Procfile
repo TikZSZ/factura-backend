@@ -1,2 +1,2 @@
-release: yarn migrate:prod && yarn build 
-web: yarn start:prod
+release: npm run  migrate:prod && npm run  build 
+web: npm run  start:prod

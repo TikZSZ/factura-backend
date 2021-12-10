@@ -1,2 +1,2 @@
-release:npm run migrate:dev &&  npm run migrate:prod
+release:npx prisma db push && yarn migrate:prod
 web: npm run start:prod

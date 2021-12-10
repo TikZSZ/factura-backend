@@ -1,2 +1,1 @@
-release: rm -r ./prisma/migrations  &&  yarn migrate:prod
-web: yarn start:prod
+web: yarn migrate:prod && yarn build && yarn start:prod

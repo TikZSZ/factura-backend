@@ -29,6 +29,7 @@ export declare class AuthController {
         userAccountId: string;
         name: string;
     }): Promise<import(".prisma/client").ReceiptRef & {
+        products: import(".prisma/client").Product[];
         store: {
             store_name: string;
             phone_number: number;
@@ -40,7 +41,6 @@ export declare class AuthController {
                 public_key: string;
             };
         };
-        products: import(".prisma/client").Product[];
         buyer: {
             name: string;
             userAccountId: string;
@@ -52,6 +52,7 @@ export declare class AuthController {
         name: string;
     } | undefined): Promise<{
         receiptRefs: (import(".prisma/client").ReceiptRef & {
+            products: import(".prisma/client").Product[];
             store: {
                 store_name: string;
                 phone_number: number;
@@ -63,7 +64,6 @@ export declare class AuthController {
                     public_key: string;
                 };
             };
-            products: import(".prisma/client").Product[];
             buyer: {
                 name: string;
                 userAccountId: string;

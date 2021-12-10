@@ -23,6 +23,7 @@ export declare class AuthService {
     getAllStoresBySeller(userAccountId: string): Promise<import(".prisma/client").Store[]>;
     getAllStores(skip?: number, take?: number): Promise<import(".prisma/client").Store[]>;
     createBill(data: CreateBillDto['data'], userAccountId: string): Promise<import(".prisma/client").ReceiptRef & {
+        products: import(".prisma/client").Product[];
         store: {
             store_name: string;
             phone_number: number;
@@ -34,7 +35,6 @@ export declare class AuthService {
                 public_key: string;
             };
         };
-        products: import(".prisma/client").Product[];
         buyer: {
             name: string;
             userAccountId: string;
@@ -43,6 +43,7 @@ export declare class AuthService {
     }>;
     getBills(userAccountId: string): Promise<{
         receiptRefs: (import(".prisma/client").ReceiptRef & {
+            products: import(".prisma/client").Product[];
             store: {
                 store_name: string;
                 phone_number: number;
@@ -54,7 +55,6 @@ export declare class AuthService {
                     public_key: string;
                 };
             };
-            products: import(".prisma/client").Product[];
             buyer: {
                 name: string;
                 userAccountId: string;

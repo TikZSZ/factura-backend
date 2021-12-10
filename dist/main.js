@@ -14,7 +14,7 @@ async function bootstrap() {
     app.useGlobalPipes(new common_1.ValidationPipe());
     const prismaService = app.get(prisma_service_1.PrismaService);
     prismaService.enableShutdownHooks(app);
-    await app.listen(5000);
+    await app.listen(process.env.PORT || 5000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

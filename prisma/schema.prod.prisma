@@ -54,11 +54,11 @@ model Product {
   id             Int         @id @default(autoincrement())
   seq            Int          
   product_name   String
-  price          Decimal
-  tax            Decimal     @default(0)
-  discount       Decimal     @default(0)
+  price          Int
+  tax            Int     @default(0)
+  discount       Int     @default(0)
   qty            Int         @default(1)
-  total          Decimal
+  total          Int
   receipt_id     Int
   receipt_refs   ReceiptRef? @relation(fields: [receipt_id], references: [receipt_id])
 }

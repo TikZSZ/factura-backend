@@ -1,5 +1,5 @@
 import { PublicKey } from '@hashgraph/sdk';
-import { BadRequestException, Body, Controller, Get, NotFoundException,Req, Param, Post ,Session, UnauthorizedException} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException,Req, Param, Post ,Session, UnauthorizedException, ParseIntPipe} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { AuthService } from './auth.service';
 import { CreateBillDto } from './dto/create-bill.dto';
@@ -13,7 +13,7 @@ type body<T> = {
 @Controller('api')
 export class AuthController {
   constructor(private authService: AuthService,private jwtService: JwtService) {}
-
+  
   @Post('/createUser')
   async createUser(@Body() body: body<Prisma.UserCreateInput>,@Req() req:any) {
     const isCorrect = PublicKey.fromString(body.data.public_key).verify(Buffer.from("bills"),Buffer.from(body.data.signature as any,"hex"));
@@ -59,12 +59,28 @@ export class AuthController {
     return this.authService.createBill(body.data, user.userAccountId);
   }
 
-  @Get('/getBills')
-  getBills(@User() user:{userAccountId:string,name:string}|undefined) {
+  @Get('/getBill/:receipt_id')
+  getBills(@Param('receipt_id',ParseIntPipe) receipt_id:number) {
+    if(!receipt_id){
+      throw new BadRequestException()
+    }
+    return this.authService.getBill(receipt_id);
+  }
+
+  @Get("/getReceiptsForUser")
+  getReceiptsForUser(@User() user:{userAccountId:string,name:string}|undefined){
     if(!user){
       throw new UnauthorizedException()
     }
-    return this.authService.getBills(user.userAccountId);
+    return this.authService.getReceiptsForUser(user.userAccountId);
+  }
+
+  @Get("/getReceiptsForStore/:storeId")
+  getReceiptsForStore(@Param('storeId',ParseIntPipe) storeId:number){
+    if(!storeId){
+      throw new BadRequestException()
+    }
+    return this.authService.getReceiptsForStore(storeId);
   }
 
   @Get("/currentUser")

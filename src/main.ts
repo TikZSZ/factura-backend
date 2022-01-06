@@ -13,7 +13,7 @@ async function bootstrap() {
     exposedHeaders: 'set-cookie',
     origin:
       process.env.NODE_ENV === 'production'
-        ? 'https://factura-frontend.vercel.app'
+        ? 'https://facturaa.vercel.app'
         : 'http://localhost:3000',
   });
   app.useGlobalPipes(new ValidationPipe());

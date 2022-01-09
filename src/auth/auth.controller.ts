@@ -1,5 +1,5 @@
 import { PublicKey } from '@hashgraph/sdk';
-import { BadRequestException, Body, Controller, Get, NotFoundException,Req, Param, Post ,Session, UnauthorizedException, ParseIntPipe} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException,Req, Param, Post ,Session, UnauthorizedException, ParseIntPipe, ForbiddenException} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { AuthService } from './auth.service';
 import { CreateBillDto } from './dto/create-bill.dto';
@@ -18,10 +18,15 @@ export class AuthController {
   async createUser(@Body() body: body<Prisma.UserCreateInput>,@Req() req:any) {
     const isCorrect = PublicKey.fromString(body.data.public_key).verify(Buffer.from("bills"),Buffer.from(body.data.signature as any,"hex"));
     if(!isCorrect) throw new BadRequestException() 
-    const createdUser = await  this.authService.createUser(body.data);
-    const token = this.jwtService.sign({userAccountId:createdUser.userAccountId,name:createdUser.name})
-    req.session['user'] = token
-    return createdUser
+    try{
+      const createdUser = await  this.authService.createUser(body.data);
+      const token = this.jwtService.sign({userAccountId:createdUser.userAccountId,name:createdUser.name})
+      req.session['user'] = token
+      return createdUser
+    }catch(err){
+      throw new ForbiddenException()
+    }
+    return
   }
 
   @Post('/loginUser')
